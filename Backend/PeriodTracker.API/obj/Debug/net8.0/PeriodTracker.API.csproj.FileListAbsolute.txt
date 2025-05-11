@@ -170,3 +170,4 @@ C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.API\obj\Debug\ne
 C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.API\obj\Debug\net8.0\PeriodTracker.API.pdb
 C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.API\obj\Debug\net8.0\PeriodTracker.API.genruntimeconfig.cache
 C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.API\obj\Debug\net8.0\ref\PeriodTracker.API.dll
+C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.API\obj\Debug\net8.0\PeriodTracker.API.sourcelink.json

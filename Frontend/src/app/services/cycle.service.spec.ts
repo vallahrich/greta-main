@@ -1,14 +1,17 @@
+// src/app/services/cycle.service.spec.ts
+
 /**
- * Cycle Service Tests - Verifies the behavior of the period cycle service
+ * Unit tests for CycleService
  * 
- * This test file validates:
- * - Proper API communication for cycle CRUD operations
- * - Correct date formatting when sending data to the backend
- * - Error handling for failed API requests
- * - Mapping of response data to the correct models
+ * These tests verify that the service correctly:
+ * - Retrieves user cycles with symptoms
+ * - Creates new cycles with proper date formatting
+ * - Updates existing cycles
+ * - Deletes cycles
+ * - Handles errors appropriately
  * 
- * It ensures the CycleService correctly manages period cycle data
- * through the backend API.
+ * The service uses HTTP calls to communicate with the backend API,
+ * so tests mock these calls using HttpClientTestingModule
  */
 import { TestBed } from '@angular/core/testing';
 import {
@@ -46,7 +49,7 @@ describe('CycleService', () => {
   });
 
   /**
-   * GET request test for getUserCycles()
+   * Tests getUserCycles() method
    * Verifies that:
    * - The correct HTTP method is used (GET)
    * - The correct endpoint is called
@@ -78,7 +81,7 @@ describe('CycleService', () => {
   });
 
   /**
-   * POST request test for createCycle()
+   * Tests createCycle() method
    * Verifies that:
    * - Dates are properly formatted before sending to the API
    * - The correct HTTP method is used (POST)
@@ -131,6 +134,7 @@ describe('CycleService', () => {
     expect(req.request.method).toBe('POST');
     
     // Check that dates were properly formatted as strings for API
+    // The service should convert Date objects to YYYY-MM-DD format
     expect(req.request.body.startDate).toEqual('2025-04-01');
     expect(req.request.body.endDate).toEqual('2025-04-05');
     expect(req.request.body.symptoms[0].date).toEqual('2025-04-02');
@@ -139,7 +143,7 @@ describe('CycleService', () => {
   });
 
   /**
-   * PUT request test for updateCycle()
+   * Tests updateCycle() method
    * Verifies that:
    * - Dates are properly formatted before sending to the API
    * - The correct HTTP method is used (PUT)
@@ -188,7 +192,7 @@ describe('CycleService', () => {
   });
 
   /**
-   * DELETE request test for deleteCycle()
+   * Tests deleteCycle() method
    * Verifies that:
    * - The correct HTTP method is used (DELETE)
    * - The correct endpoint with ID is called
@@ -212,10 +216,10 @@ describe('CycleService', () => {
   });
   
   /**
-   * Error handling test
+   * Tests error handling for HTTP errors
    * Verifies that:
    * - HTTP errors are properly caught and propagated
-   * - Error is logged to console
+   * - Errors are logged for debugging purposes
    */
   it('should handle API errors', (done) => {
     // Call service method that will error
@@ -235,5 +239,31 @@ describe('CycleService', () => {
       status: 500, 
       statusText: 'Internal Server Error' 
     });
+  });
+
+  /**
+   * Tests date formatting functionality
+   * Verifies that the formatLocalDate method correctly formats dates
+   */
+  it('should format dates correctly for API', (done) => {
+    // Create a cycle with a specific date
+    const testDate = new Date(2025, 3, 15); // April 15, 2025
+    const input: CycleWithSymptoms = {
+      cycleId: 0,
+      userId: 1,
+      startDate: testDate,
+      endDate: testDate,
+      notes: '',
+      symptoms: []
+    };
+
+    service.createCycle(input).subscribe(() => {
+      done();
+    });
+
+    const req = httpMock.expectOne(baseUrl);
+    // The date should be formatted as YYYY-MM-DD
+    expect(req.request.body.startDate).toEqual('2025-04-15');
+    req.flush(input);
   });
 });

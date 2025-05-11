@@ -393,3 +393,4 @@ C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.Tests\obj\Debug\
 C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.Tests\obj\Debug\net8.0\PeriodTracker.Tests.pdb
 C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.Tests\obj\Debug\net8.0\PeriodTracker.Tests.genruntimeconfig.cache
 C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.Tests\obj\Debug\net8.0\ref\PeriodTracker.Tests.dll
+C:\Users\vince\OneDrive\master\greta-main\Backend\PeriodTracker.Tests\obj\Debug\net8.0\PeriodTracker.Tests.sourcelink.json
