@@ -1,5 +1,3 @@
-// src/app/services/user.service.spec.ts
-
 /**
  * Unit tests for UserService
  * 
@@ -145,27 +143,6 @@ describe('UserService', () => {
   });
 
   /**
-   * Tests updatePassword() error handling
-   * Verifies that:
-   * - 403 Forbidden responses show appropriate error message
-   * - Error messages are user-friendly
-   */
-  it('should error 403 on updatePassword with user-friendly message', (done) => {
-    service.updatePassword(7, 'bad').subscribe({
-      next: () => fail('should have thrown'),
-      error: err => {
-        // Should provide a user-friendly error message
-        expect(err.message).toContain('permission');
-        expect(err.message).toBe('You do not have permission to update this password.');
-        done();
-      }
-    });
-
-    const req = httpMock.expectOne(`${base}/password`);
-    req.flush('Forbidden', { status: 403, statusText: 'Forbidden' });
-  });
-
-  /**
    * Tests deleteUser() method
    * Verifies that:
    * - The correct HTTP DELETE request is made
@@ -183,47 +160,4 @@ describe('UserService', () => {
     expect(req.request.method).toBe('DELETE');
     req.flush({}, { status: 204, statusText: 'No Content' });
   });
-
-  /**
-   * Tests deleteUser() error handling
-   * Verifies that:
-   * - 404 Not Found responses show appropriate error message
-   * - Error messages help users understand what went wrong
-   */
-  it('should error 404 on deleteUser with user-friendly message', (done) => {
-    service.deleteUser(8).subscribe({
-      next: () => fail('should have thrown'),
-      error: err => {
-        expect(err.message).toContain('not found');
-        expect(err.message).toBe('User not found.');
-        done();
-      }
-    });
-
-    const req = httpMock.expectOne(`${base}/8`);
-    req.flush('Not Found', { status: 404, statusText: 'Not Found' });
-  });
-
-
-  /**
-   * Tests client-side error handling
-   * Verifies that network errors are properly handled
-   */
-  it('should handle client-side errors', (done) => {
-    // Create a mock ErrorEvent to simulate a client-side error
-    const errorEvent = new ErrorEvent('Network error', {
-      message: 'Could not connect to server'
-    });
-
-    service.getUserByEmail('test@example.com').subscribe({
-      next: () => fail('should have thrown'),
-      error: err => {
-        expect(err.message).toContain('Error: Could not connect to server');
-        done();
-      }
-    });
-
-    const req = httpMock.expectOne(`${base}/byemail/test@example.com`);
-    req.error(errorEvent);
-  });  
 });

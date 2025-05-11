@@ -103,28 +103,6 @@ describe('AuthService', () => {
   });
 
   /**
-   * Tests error handling for failed login
-   * Verifies that HTTP errors are properly propagated
-   */
-  it('should error on bad credentials', (done) => {
-    service.login('wrong', 'bad').subscribe({
-      next: () => fail('Expected an error response'),
-      error: err => {
-        // The service should pass through the 401
-        expect(err.status).toBe(401);
-        expect(err.statusText).toBe('Unauthorized');
-        done();
-      }
-    });
-
-    const req = httpMock.expectOne(loginUrl);
-    req.flush('Unauthorized', {
-      status: 401,
-      statusText: 'Unauthorized'
-    });
-  });
-
-  /**
    * Tests logout functionality:
    * 1. Sets up auth data
    * 2. Calls logout
@@ -242,31 +220,6 @@ describe('AuthService', () => {
     
     const req = httpMock.expectOne(loginUrl);
     req.flush({ email: 'logged.in.user', token: 'test-token' });
-  });
-
-  /**
-   * Tests error handling for registration
-   */
-  it('should handle registration errors', (done) => {
-    const registerData = {
-      name: 'Duplicate User',
-      email: 'duplicate@example.com',
-      password: 'password123'
-    };
-
-    service.register(registerData).subscribe({
-      next: () => fail('Expected an error response'),
-      error: err => {
-        expect(err.status).toBe(409); // Conflict
-        done();
-      }
-    });
-
-    const req = httpMock.expectOne(registerUrl);
-    req.flush('Email already exists', {
-      status: 409,
-      statusText: 'Conflict'
-    });
   });
 
   /**

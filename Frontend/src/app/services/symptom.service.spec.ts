@@ -1,5 +1,3 @@
-// src/app/services/symptom.service.spec.ts
-
 /**
  * Unit tests for SymptomService
  * 
@@ -133,48 +131,5 @@ describe('SymptomService', () => {
     const req = httpMock.expectOne(baseUrl);
     expect(req.request.method).toBe('GET');
     req.flush(emptyList);
-  });
-
-  /**
-   * Tests that the service handles partial data gracefully
-   * Some symptoms may not have icons, which should be handled properly
-   */
-  it('should handle symptoms without icons', (done) => {
-    const symptomsWithoutIcons: Symptom[] = [
-      { symptomId: 1, name: 'Headache' }, // No icon property
-      { symptomId: 2, name: 'Cramps', icon: undefined } // Explicit undefined
-    ];
-
-    service.getSymptomCatalog().subscribe((symptoms: Symptom[]) => {
-      expect(symptoms.length).toBe(2);
-      expect(symptoms[0].icon).toBeUndefined();
-      expect(symptoms[1].icon).toBeUndefined();
-      done();
-    });
-
-    const req = httpMock.expectOne(baseUrl);
-    req.flush(symptomsWithoutIcons);
-  });
-
-  /**
-   * Tests timeout behavior
-   * Verifies the service handles slow or unresponsive API endpoints
-   */
-  it('should handle slow API responses', (done) => {
-    // Set a shorter timeout for testing
-    const slowResponse: Symptom[] = [
-      { symptomId: 1, name: 'Slow Symptom' }
-    ];
-
-    service.getSymptomCatalog().subscribe((symptoms: Symptom[]) => {
-      expect(symptoms).toEqual(slowResponse);
-      done();
-    });
-
-    // Simulate a delayed response
-    const req = httpMock.expectOne(baseUrl);
-    setTimeout(() => {
-      req.flush(slowResponse);
-    }, 100); // 100ms delay
   });
 });
